@@ -55,5 +55,5 @@ if __name__ == "__main__":
     result = model(image)
     problem_set = problem_url_generator(result.pandas().xyxy[0])
 
-    print(problem_set[1])
+    print(f'We found "{problem_set[1]}" as your problem.')
     pass
