@@ -20,7 +20,7 @@ else:
 
 parser = argparse.ArgumentParser()
 parser.add_argument('--image', type=str, required=True, help='Path to image')
-parser.parse_args()
+args = parser.parse_args()
 
 def problem_url_generator(dataframe):
     dataframe = dataframe['name'].tolist()
@@ -53,7 +53,7 @@ if __name__ == "__main__":
     model = torch.hub.load('ultralytics/yolov5', 'custom', path='problem-solver-32-416/exp17/weights/last.pt', force_reload=True)
     image = cv2.imread(args.image)
     result = model(image)
-    problem_set = problem_url_generator(result.pandas().xyxy[0]['name'])
+    problem_set = problem_url_generator(result.pandas().xyxy[0])
 
     print(problem_set[1])
     pass
