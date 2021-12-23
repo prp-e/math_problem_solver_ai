@@ -3,8 +3,9 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 import torch
-import urllib
 import pandas as pd
+import urllib
+import webbrowser
 
 
 ### There will be an OS detection tool here for macOS.  
@@ -50,10 +51,15 @@ def problem_url_generator(dataframe):
     return problem_set, problem, url
 
 if __name__ == "__main__":
-    model = torch.hub.load('ultralytics/yolov5', 'custom', path='problem-solver-32-416/exp17/weights/last.pt', force_reload=True)
+    model = torch.hub.load('ultralytics/yolov5', 'custom', path='problem-solver-32-416/exp17/weights/last.pt', force_reload=True) # Change this to your own desired model
     image = cv2.imread(args.image)
     result = model(image)
     problem_set = problem_url_generator(result.pandas().xyxy[0])
 
     print(f'We found "{problem_set[1]}" as your problem.')
-    pass
+    choice = input("What you'd like to do? ( Show Image: 1, Solve problem: 2 )")
+    if choice == '1':
+        cv2.imshow('Problem', np.squeeze(result.render()))
+        cv2.waitKey(0)
+    if choice == '2':
+        webbrowser.open(problem_set[2])
